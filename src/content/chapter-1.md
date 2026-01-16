@@ -6,7 +6,7 @@ Chapter 1: Get Started
 
 The essentials: Bike, Bike Bags, Sleeping Bag, Navigation Device, Water Bottle.
 
-Don't use a saddle bag this large - they break/bend. My setup may look flash, your's doesn't need to.
+Don't use a saddle bag this large - they break/bend. My setup may look flash, yours doesn't need to.
 
 [PHOTO: IMG_8845]
 

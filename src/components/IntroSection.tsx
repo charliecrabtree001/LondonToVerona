@@ -11,28 +11,20 @@ interface TextBlock {
 
 const introContent: TextBlock[] = [
   {
-    text: "Hey, I'm Charlie.",
-    photo: "IMG_8906"
+    text: "Last summer I cycled from London to Verona without spending a penny on accommodation.",
+    photo: "london-photo"
   },
   {
-    text: "Last summer I cycled from London, England to Verona, Italy without spending a penny on accommodation.",
-    photo: "IMG_8906"
+    text: "I had no camping experience and little cycling experience.",
+    photo: "cycling-in-england"
   },
   {
-    text: "I had no camping experience and very little cycling experience.",
-    photo: "IMG_9133"
+    text: "I figured that I would combine my thoughts and the photos.",
+    photo: "IMG_8917"
   },
   {
-    text: "I'll show you how I pulled it off, and how you can do the same.",
-    photo: "IMG_9232"
-  },
-  {
-    text: "A quick shout out to Cliff Weitzman. An audiobook on his Speechify app gave me the inspiration for the trip.",
-    photo: "IMG_9275"
-  },
-  {
-    text: "He later challenged me to set up this web page…",
-    photo: "IMG_9275"
+    text: "Thank Cliff Weitzman for the idea…",
+    photo: "IMG_8934"
   }
 ];
 
@@ -59,10 +51,10 @@ function ScrollBlock({
     [0, 1, 1, 1, 0]
   );
 
-  // Background opacity
+  // Background opacity - smoother fade for crossfade effect
   const bgOpacity = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.8, 1],
+    [0, 0.15, 0.85, 1],
     [0, 1, 1, 0]
   );
 
@@ -93,7 +85,7 @@ function ScrollBlock({
         className="scroll-text-container"
         style={{ opacity: textOpacity, y }}
       >
-        <p className={`scroll-text ${index === 0 ? 'scroll-text-hero' : ''}`}>
+        <p className="scroll-text">
           {text}
         </p>
       </motion.div>
@@ -102,31 +94,51 @@ function ScrollBlock({
 }
 
 export default function IntroSection() {
+  const heroPhotoUrl = `${BASE_PATH}media/IMG_9209.jpg`;
+
   return (
     <section className="intro-section">
       {/* Hero title */}
       <div className="hero-block">
-        <motion.h1
-          className="hero-title"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-        >
-          London to Verona
-        </motion.h1>
-        <motion.p
-          className="hero-subtitle"
+        <div
+          className="hero-background"
+          style={{ backgroundImage: `url(${heroPhotoUrl})` }}
+        />
+        <div className="hero-overlay" />
+        <motion.div
+          className="hero-content"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 1 }}
+          transition={{ duration: 1.5 }}
         >
-          2025
-        </motion.p>
+          <motion.h1
+            className="hero-title"
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.4, ease: "easeOut" }}
+          >
+            London to Verona
+          </motion.h1>
+          <motion.div
+            className="hero-line"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.8, duration: 1, ease: "easeOut" }}
+          />
+          <motion.p
+            className="hero-subtitle"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 1 }}
+          >
+            2025
+          </motion.p>
+        </motion.div>
         <motion.div
           className="scroll-indicator"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
+          transition={{ delay: 2, duration: 1 }}
         >
           <span>Scroll to begin</span>
           <motion.div

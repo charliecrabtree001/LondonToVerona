@@ -2,3 +2,20 @@ main {
   width: 100%;
   min-height: 100vh;
 }
+
+/* Smooth ending section */
+.ending-section {
+  position: relative;
+  height: 10vh;
+  background: #000;
+}
+
+.ending-fade {
+  position: absolute;
+  top: -20vh;
+  left: 0;
+  right: 0;
+  height: 20vh;
+  background: linear-gradient(to bottom, transparent 0%, #000 100%);
+  pointer-events: none;
+}

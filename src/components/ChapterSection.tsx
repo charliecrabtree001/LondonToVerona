@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import './ChapterSection.css';
 
@@ -23,6 +23,8 @@ function ScrollBlock({
   photo?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -37,7 +39,7 @@ function ScrollBlock({
 
   const bgOpacity = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.8, 1],
+    [0, 0.15, 0.85, 1],
     [0, 1, 1, 0]
   );
 
@@ -49,21 +51,49 @@ function ScrollBlock({
 
   const photoUrl = photo ? `${BASE_PATH}media/${photo}.jpg` : undefined;
 
+  // Lazy load images using IntersectionObserver
+  useEffect(() => {
+    if (!ref.current || !photoUrl) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [photoUrl]);
+
+  // Preload image when visible
+  useEffect(() => {
+    if (!isVisible || !photoUrl) return;
+
+    const img = new Image();
+    img.onload = () => setIsLoaded(true);
+    img.src = photoUrl;
+  }, [isVisible, photoUrl]);
+
   return (
     <div ref={ref} className="scroll-block">
-      {photoUrl && (
+      {photoUrl && isVisible && (
         <motion.div
           className="scroll-background"
           style={{
             backgroundImage: `url(${photoUrl})`,
-            opacity: bgOpacity
+            opacity: isLoaded ? bgOpacity : 0,
+            willChange: 'opacity'
           }}
         />
       )}
 
       <motion.div
         className="scroll-text-container"
-        style={{ opacity: textOpacity, y }}
+        style={{ opacity: textOpacity, y, willChange: 'opacity, transform' }}
       >
         <p className="scroll-text">{text}</p>
       </motion.div>
@@ -99,7 +129,6 @@ export default function ChapterSection({ chapterNumber, title, content }: Chapte
           className="chapter-header-content"
           style={{ opacity: headerOpacity, y: headerY }}
         >
-          <span className="chapter-number">Chapter {chapterNumber}</span>
           <h2 className="chapter-title">{title}</h2>
         </motion.div>
       </div>
