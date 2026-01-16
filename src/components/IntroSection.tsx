@@ -30,12 +30,10 @@ const introContent: TextBlock[] = [
 
 function ScrollBlock({
   text,
-  photo,
-  index
+  photo
 }: {
   text: string;
   photo?: string;
-  index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -157,7 +155,6 @@ export default function IntroSection() {
           key={index}
           text={block.text}
           photo={block.photo}
-          index={index}
         />
       ))}
     </section>

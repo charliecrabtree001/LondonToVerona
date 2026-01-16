@@ -101,7 +101,7 @@ function ScrollBlock({
   );
 }
 
-export default function ChapterSection({ chapterNumber, title, content }: ChapterProps) {
+export default function ChapterSection({ title, content }: ChapterProps) {
   const headerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
